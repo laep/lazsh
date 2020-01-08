@@ -97,3 +97,31 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Vim mode
+bindkey -v
+
+# remove ESC lag
+export KEYTIMEOUT=1
+
+# browse command history
+bindkey '^P' up-history
+bindkey '^N' down-history
+# backspace and ^h
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+# remove word backwars
+bindkey '^w' backward-kill-word
+# normal control + r
+bindkey '^r' history-incremental-search-backward
+
+# widget saying the mode we are in
+function zle-line-init zle-keymap-select {
+    VIM_NORMAL="%{$fg_bold[magenta]%} [% NORMAL]%  %{$reset_color%}"
+    VIM_INSERT="%{$fg_bold[red]%} [% INSERT]%  %{$reset_color%}"
+    RPS1="${${KEYMAP/vicmd/$VIM_NORMAL}/(main|viins)/$VIM_INSERT}$EPS1"
+    zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select
